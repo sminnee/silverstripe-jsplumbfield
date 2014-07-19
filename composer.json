@@ -2,6 +2,7 @@
     "name": "sminnee/jsplumbfield",
     "description": "SilverStripe FormField providing a JSPlumb UI",
     "license": "BSD-3-Clause",
+    "type": "silverstripe-module",
     "authors": [
         {
             "name": "Sam Minnee",
@@ -9,5 +10,7 @@
         }
     ],
     "minimum-stability": "dev",
-    "require": {}
+    "require": {
+        "silverstripe/framework": "~3"
+    }
 }
