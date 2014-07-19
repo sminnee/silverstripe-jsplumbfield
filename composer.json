@@ -1,0 +1,13 @@
+{
+    "name": "sminnee/jsplumbfield",
+    "description": "SilverStripe FormField providing a JSPlumb UI",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Sam Minnee",
+            "email": "sam@silverstripe.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
