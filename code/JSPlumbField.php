@@ -22,7 +22,7 @@ class JSPlumbField extends FormField {
 	protected $linksOutIDField = 'ID';
 
 	public function FieldHolder($properties = array()) {
-		Requirements::javascript("jsplumbfield/thirdparty/jsplumb/js/jquery.jsPlumb-1.6.2.js");
+		Requirements::javascript("jsplumbfield/thirdparty/jsplumb/js/jquery.jsPlumb-1.6.2-min.js");
 		Requirements::javascript("jsplumbfield/javascript/JSPlumbField.js");
 
 		return $this->renderWith('JSPlumbField');
