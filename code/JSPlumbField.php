@@ -102,7 +102,13 @@ class JSPlumbField extends FormField {
 		$data = new ArrayList;
 
 		foreach($this->getList() as $item) {
-			$destNodes = $item->{$this->linksOutRelation}()->column($this->linksOutIDField);
+			$list = $item->{$this->linksOutRelation}();
+			if(method_exists($list, 'column')) {
+				$destNodes = $list->column($this->linksOutIDField);
+			} else {
+				$destNodes = [];
+				foreach($list as $link) $destNodes[] = $link->{$this->linksOutIDField};
+			}
 			$destNodeIDs = $destNodes ? ('node-' . implode(',node-', $destNodes)) : '';
 
 			$data->push(new ArrayData(array(
@@ -110,8 +116,8 @@ class JSPlumbField extends FormField {
 				"NodeID" => "node-$item->ID",
 				"DestNodeIDs" => $destNodeIDs,
 				"Link" => str_replace('$ID', $item->ID, $this->editLinkPattern),
-				"PosLeft" => $item->{$this->posLeftField},
-				"PosTop" => $item->{$this->posTopField},
+				"PosLeft" => (int)$item->{$this->posLeftField},
+				"PosTop" => (int)$item->{$this->posTopField},
 			)));
 
 		}
