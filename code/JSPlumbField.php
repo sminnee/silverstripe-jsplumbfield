@@ -1,5 +1,12 @@
 <?php
 
+use SilverStripe\View\Requirements;
+use SilverStripe\ORM\ArrayList;
+use SilverStripe\View\ArrayData;
+use SilverStripe\Control\HTTPResponse_Exception;
+use SilverStripe\Control\HTTPResponse;
+use SilverStripe\Forms\FormField;
+
 class JSPlumbField extends FormField {
 
 	private static $url_handlers = array(
@@ -126,20 +133,20 @@ class JSPlumbField extends FormField {
 
 	function setPosition($request) {
 		$nodeID = str_replace('node-', '', $request->getVar('node'));
-		if(!is_numeric($nodeID)) throw new SS_HTTPResponse_Exception('Bad node ID: ' . $request->getVar('node'), 400);
+		if(!is_numeric($nodeID)) throw new HTTPResponse_Exception('Bad node ID: ' . $request->getVar('node'), 400);
 		$node = $this->getList()->byID($nodeID);
-		if(!$node) throw new SS_HTTPResponse_Exception("Can't find node #$nodeID", 400);
+		if(!$node) throw new HTTPResponse_Exception("Can't find node #$nodeID", 400);
 
 		$left = $request->getVar('left');
 		$top = $request->getVar('top');
 
-		if(!is_numeric($left) || !is_numeric($top)) throw new SS_HTTPResponse_Exception("Bad pos $left,$top", 400);
+		if(!is_numeric($left) || !is_numeric($top)) throw new HTTPResponse_Exception("Bad pos $left,$top", 400);
 
 		$node->PosLeft = max(0,$left);
 		$node->PosTop = max(0,$top);
 		$node->write();
 
-		$response = new SS_HTTPResponse(json_encode(array(
+		$response = new HTTPResponse(json_encode(array(
 			"node" => "node-$nodeID",
 			"left" => $node->PosLeft,
 			"top" => $node->PosTop,
@@ -155,7 +162,7 @@ class JSPlumbField extends FormField {
 		$toID = str_replace('node-','',$request->getVar('to'));
 
 		$fromNode = $this->getList()->byID($fromID);
-		if(!$fromNode) throw new SS_HTTPResponse_Exception(400, "Can't find node #$fromID");
+		if(!$fromNode) throw new HTTPResponse_Exception(400, "Can't find node #$fromID");
 
 		$linksOut = $fromNode->{$this->linksOutRelation}();
 
@@ -170,7 +177,7 @@ class JSPlumbField extends FormField {
 			$linksOut->add($newRelation);
 		}
 
-		$response = new SS_HTTPResponse(json_encode(array(
+		$response = new HTTPResponse(json_encode(array(
 			"from" => "node-$fromID",
 			"to" => "node-$toID"
 		)));
@@ -184,7 +191,7 @@ class JSPlumbField extends FormField {
 		$toID = str_replace('node-','',$request->getVar('to'));
 
 		$fromNode = $this->getList()->byID($fromID);
-		if(!$fromNode) throw new SS_HTTPResponse_Exception(400, "Can't find node #$fromID");
+		if(!$fromNode) throw new HTTPResponse_Exception(400, "Can't find node #$fromID");
 
 		$linksOut = $fromNode->{$this->linksOutRelation}();
 
@@ -197,7 +204,7 @@ class JSPlumbField extends FormField {
 			$linksOut->filter($this->linksOutIDField,$toID)->removeAll();
 		}
 
-		$response = new SS_HTTPResponse(json_encode(array(
+		$response = new HTTPResponse(json_encode(array(
 			"from" => "node-$fromID",
 			"to" => "node-$toID"
 		)));
