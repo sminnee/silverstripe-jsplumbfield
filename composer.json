@@ -11,5 +11,10 @@
     ],
     "require": {
         "silverstripe/framework": "^4.0.0-beta1"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.5.x-dev"
+        }
     }
 }
